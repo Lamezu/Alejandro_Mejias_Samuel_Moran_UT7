@@ -5,9 +5,11 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "autores")
+@EntityListeners(AuditingEntityListener.class)
 public class Autor {
 
     @Id

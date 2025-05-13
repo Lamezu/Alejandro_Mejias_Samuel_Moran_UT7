@@ -1,10 +1,13 @@
 package com.alejandro_samuel.biblioteca.model;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.*;
 
 
 @Entity
 @Table(name = "libros")
+@EntityListeners(AuditingEntityListener.class)
 public class Libro {
     
     @Id
