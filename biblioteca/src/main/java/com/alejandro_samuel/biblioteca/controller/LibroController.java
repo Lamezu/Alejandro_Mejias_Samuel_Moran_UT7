@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/libros")  // Añadir versión
+@RequestMapping("/api/v1/libros")
 public class LibroController {
     
     private final LibroService libroService;
@@ -38,8 +38,12 @@ public class LibroController {
     // Crear nuevo libro
     @PostMapping
     public ResponseEntity<Libro> crearLibro(@RequestBody Libro libro) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(libroService.guardarLibro(libro));
+        try {
+            Libro nuevoLibro = libroService.guardarLibro(libro);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoLibro);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
     
     // Actualizar libro
@@ -47,19 +51,27 @@ public class LibroController {
     public ResponseEntity<Libro> actualizarLibro(
             @PathVariable Long id, 
             @RequestBody Libro libro) {
-        return libroService.actualizarLibro(id, libro)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            return libroService.actualizarLibro(id, libro)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
     
     // Eliminar libro
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarLibro(@PathVariable Long id) {
-        libroService.eliminarLibro(id);
-        return ResponseEntity.noContent().build();
+        try {
+            libroService.eliminarLibro(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     
-    // Búsqueda con filtros
+    // BÃºsqueda con filtros
     @GetMapping("/buscar")
     public ResponseEntity<List<Libro>> buscarLibros(
             @RequestParam(required = false) String titulo,

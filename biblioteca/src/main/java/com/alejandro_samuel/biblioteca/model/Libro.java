@@ -4,7 +4,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "libros")
 @EntityListeners(AuditingEntityListener.class)
@@ -19,8 +18,10 @@ public class Libro {
     private String isbn;
     
     private int anioPublicacion;
-
-
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "autor_id")
+    private Autor autor;
     
     public Libro(Long id, String titulo, String isbn, int anioPublicacion) {
         this.id = id;
@@ -29,11 +30,8 @@ public class Libro {
         this.anioPublicacion = anioPublicacion;
     }
 
-    Libro(){
-
+    public Libro() {
     }
-    
-
     
     public Long getId() {
         return id;
@@ -67,13 +65,6 @@ public class Libro {
         this.anioPublicacion = anioPublicacion;
     }
 
-
-
-    @ManyToOne
-    private Autor autor;
-
-
-
     public Autor getAutor() {
         return autor;
     }
@@ -81,7 +72,4 @@ public class Libro {
     public void setAutor(Autor autor) {
         this.autor = autor;
     }
-
-    
-
 }
