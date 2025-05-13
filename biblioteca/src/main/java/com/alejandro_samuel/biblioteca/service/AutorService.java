@@ -2,7 +2,6 @@ package com.alejandro_samuel.biblioteca.service;
 
 import com.alejandro_samuel.biblioteca.model.Autor;
 import com.alejandro_samuel.biblioteca.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +13,6 @@ public class AutorService {
 
     private final AutorRepository autorRepository;
 
-    @Autowired
     public AutorService(AutorRepository autorRepository) {
         this.autorRepository = autorRepository;
     }

@@ -2,7 +2,6 @@ package com.alejandro_samuel.biblioteca.controller;
 
 import com.alejandro_samuel.biblioteca.model.Autor;
 import com.alejandro_samuel.biblioteca.service.AutorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ public class AutorController {
 
     private final AutorService autorService;
 
-    @Autowired
     public AutorController(AutorService autorService) {
         this.autorService = autorService;
     }
