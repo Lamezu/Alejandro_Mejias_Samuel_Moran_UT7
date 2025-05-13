@@ -19,3 +19,4 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
             @Param("anioPublicacion") Integer anioPublicacion,
             Sort sort);
 }
+
