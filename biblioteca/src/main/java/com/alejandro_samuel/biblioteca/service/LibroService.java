@@ -1,13 +1,14 @@
 package com.alejandro_samuel.biblioteca.service;
 
-import java.util.List;
-
+import com.alejandro_samuel.biblioteca.model.Libro;
+import com.alejandro_samuel.biblioteca.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.alejandro_samuel.biblioteca.model.Libro;
-import com.alejandro_samuel.biblioteca.repository.LibroRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LibroService {
@@ -19,23 +20,38 @@ public class LibroService {
         this.libroRepository = libroRepository;
     }
     
-    public List<Libro> buscarLibros(String titulo, Integer anioPublicacion, String sortBy, String direction) {
-        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
-        
-        // Si usas la opción con @Query
-        return libroRepository.buscarLibros(titulo, anioPublicacion, sort);
-        
-        // Si usas los métodos de Spring Data
-        // if (titulo != null && anioPublicacion != null) {
-        //     return libroRepository.findByTituloContainingAndAnioPublicacion(titulo, anioPublicacion, sort);
-        // } else if (titulo != null) {
-        //     return libroRepository.findByTituloContaining(titulo, sort);
-        // } else if (anioPublicacion != null) {
-        //     return libroRepository.findByAnioPublicacion(anioPublicacion, sort);
-        // } else {
-        //     return libroRepository.findAll(sort);
-        // }
+    public List<Libro> obtenerTodosLibros() {
+        return libroRepository.findAll();
     }
     
-    // Otros métodos del servicio...
+    public Optional<Libro> obtenerLibroPorId(Long id) {
+        return libroRepository.findById(id);
+    }
+    
+    @Transactional
+    public Libro guardarLibro(Libro libro) {
+        return libroRepository.save(libro);
+    }
+    
+    @Transactional
+    public Optional<Libro> actualizarLibro(Long id, Libro libroActualizado) {
+        return libroRepository.findById(id)
+                .map(libroExistente -> {
+                    libroExistente.setTitulo(libroActualizado.getTitulo());
+                    libroExistente.setIsbn(libroActualizado.getIsbn());
+                    libroExistente.setAnioPublicacion(libroActualizado.getAnioPublicacion());
+                    libroExistente.setAutor(libroActualizado.getAutor());
+                    return libroRepository.save(libroExistente);
+                });
+    }
+    
+    @Transactional
+    public void eliminarLibro(Long id) {
+        libroRepository.deleteById(id);
+    }
+    
+    public List<Libro> buscarLibros(String titulo, Integer anio, String sortBy, String order) {
+        Sort sort = Sort.by(Sort.Direction.fromString(order), sortBy);
+        return libroRepository.buscarLibros(titulo, anio, sort);
+    }
 }

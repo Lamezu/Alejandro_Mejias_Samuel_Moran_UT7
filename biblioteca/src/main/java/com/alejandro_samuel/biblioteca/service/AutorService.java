@@ -1,6 +1,7 @@
 package com.alejandro_samuel.biblioteca.service;
 
 import com.alejandro_samuel.biblioteca.model.Autor;
+import com.alejandro_samuel.biblioteca.model.Libro;
 import com.alejandro_samuel.biblioteca.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,4 +50,9 @@ public class AutorService {
                     return autorRepository.save(autorExistente);
                 });
     }
+    public List<Libro> obtenerLibrosDeAutor(Long autorId) {
+    return autorRepository.findById(autorId)
+            .map(Autor::getLibros)
+            .orElseThrow(() -> new RuntimeException("Autor no encontrado"));
+}
 }

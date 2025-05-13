@@ -17,8 +17,8 @@ public class Autor {
     private String nombre;
 
     private String nacionalidad;
-
-    @OneToMany(mappedBy = "autor")
+    
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Libro> libros = new ArrayList<>();
 
     public Autor() {

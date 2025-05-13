@@ -1,6 +1,7 @@
 package com.alejandro_samuel.biblioteca.controller;
 
 import com.alejandro_samuel.biblioteca.model.Autor;
+import com.alejandro_samuel.biblioteca.model.Libro;
 import com.alejandro_samuel.biblioteca.service.AutorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,10 @@ public class AutorController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+    // En AutorController.java
+    @GetMapping("/{id}/libros")
+    public ResponseEntity<List<Libro>> obtenerLibrosDeAutor(@PathVariable Long id) {
+    return ResponseEntity.ok(autorService.obtenerLibrosDeAutor(id));
     }
 }
